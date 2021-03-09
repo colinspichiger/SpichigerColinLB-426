@@ -11,74 +11,20 @@ import javafx.collections.ObservableList;
  * @author Manuel Bachofner
  */
 public class Chiffrierer {
+    
+    private Methoden verfügbareMethoden;
 
     private final ArrayList<Chiffriermethode> methoden = new ArrayList<>();
     private final StringProperty eingabe = new SimpleStringProperty();
     private final StringProperty log = new ReadOnlyStringWrapper();
     private final String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
+    
     public void fuehreAus(Chiffriermethode methode) {
-
+        
+        this.eingabe.setValue(verfügbareMethoden.ausfuehren(methode));
         methoden.add(methode);
         
-        if (methode == Chiffriermethode.Caesar) {
-            String original = eingabe.getValue();
-            int caesarOffset = 6;
-            StringBuilder chiffrat = new StringBuilder();
-            for (int i = 0; i < original.length(); i++) {
-                int index = alphabet.indexOf(original.charAt(i));
-                int neuerIndex = (index + caesarOffset) % alphabet.length();
-                chiffrat.append(alphabet.charAt(neuerIndex));
-            }
-            eingabe.setValue(chiffrat.toString());
-        }
-        if (methode == Chiffriermethode.Transposition) {
-            StringBuilder start = new StringBuilder();
-            StringBuilder ende = new StringBuilder();
-            String string = eingabe.getValue();
-            for (int i = 0; i < string.length(); i++) {
-                if (i % 2 == 0) {
-                    start.append(string.charAt(i));
-                } else {
-                    try {
-                        ende.append(string.charAt(i));
-                    } catch (IndexOutOfBoundsException e) {
-                    }
-                }
-
-            }
-            start.append(ende);
-            eingabe.setValue(start.toString());
-        }
-        if (methode == Chiffriermethode.Kamasutra) {
-            String schluessel = "T5tIi0Bb1PpW2wQq3LlXx4CcJjEeY6yGgAa7UuRrOoFfZzMmS9sVvDdNn8KkHh";
-
-            StringBuilder chiffrat = new StringBuilder();
-            String klartext = eingabe.getValue();
-            for (int i = 0; i < klartext.length(); i++) {
-            char buchstabe = klartext.charAt(i);
-            int chiffratIndex;
-            int index = schluessel.indexOf(buchstabe);
-            if (index < schluessel.length() / 2) {
-            chiffratIndex = index + schluessel.length() / 2;
-            } else {
-            chiffratIndex = index - schluessel.length() / 2;
-            }
-            chiffrat.append(schluessel.charAt(chiffratIndex));
-            }
-            eingabe.setValue(chiffrat.toString());
-        }
-        /*
-        if (methode == Chiffriermethode.Secure) {
-            String klartext = eingabe.getValue();
-            StringBuilder chiffrat = new StringBuilder());   
-            for(int i = 0; i<klartext.length(i++); i++){
-                chiffrat.append("*");
-            }
-            eingabe.setValue(chiffrat.toString());
-
-        }
-         */
+        
         doit();
 
     }
